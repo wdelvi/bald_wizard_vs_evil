@@ -6,22 +6,11 @@ public class Player : MonoBehaviour
 	public GameSettings settings;
 	public GameObject currentProjectile;
 
-	private float stunTimer;
-
-	// Use this for initialization
-	protected void Start () 
-	{
-		this.stunTimer = this.settings.stunLength;
-	}
-	
 	// Update is called once per frame
 	public void UpdatePlayer () 
 	{
-		if (this.stunTimer >= this.settings.stunLength) 
-		{
-			this.UpdatePlayerPosition ();
-			this.CheckForInput ();
-		}
+		this.UpdatePlayerPosition ();
+		this.CheckForInput ();
 	}
 
 	protected void UpdatePlayerPosition()

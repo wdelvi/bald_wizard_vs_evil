@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameModel 
 {
@@ -10,6 +11,11 @@ public class GameModel
 	public float numberOfSpawns;
 	public float startTime;
 	public float gameProgress;
+	public bool gameWon;
+	public bool gameLost;
+	public int goodbyeIndex;
+	public bool bossSpawned;
+	public List<GameObject> spawnedEnemies;
 
 	public void GameStart( GameSettings settings )
 	{
@@ -18,6 +24,11 @@ public class GameModel
 		this.spawnRateDecrease = (settings.spawnRateStart - settings.spawnRateFloor) / settings.gameLength;
 		this.gameRunning = true;
 		this.startTime = Time.time;
+		this.gameWon = false;
+		this.gameLost = false;
+		this.goodbyeIndex = 0;
+		this.bossSpawned = false;
+		this.spawnedEnemies = new List<GameObject> ();
 	}
 
 	public void AdjustSpawnTimer( GameSettings settings )

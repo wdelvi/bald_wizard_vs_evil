@@ -3,7 +3,8 @@ using System.Collections;
 
 public class DestroyPastX: MonoBehaviour 
 {
-	public float destroyIfXLessThan;
+	public float xForDestroy;
+	public bool isLessThan;
 	private Transform myTransform;
 
 	void Start()
@@ -18,9 +19,19 @@ public class DestroyPastX: MonoBehaviour
 			return;
 		}
 
-		if (this.myTransform.localPosition.x < destroyIfXLessThan) 
+		if (this.isLessThan) 
 		{
-			Destroy (this.gameObject, 0f);
+			if (this.myTransform.localPosition.x < xForDestroy) 
+			{
+				Destroy (this.gameObject, 0f);
+			}
+		}
+		else 
+		{
+			if (this.myTransform.localPosition.x > xForDestroy) 
+			{
+				Destroy (this.gameObject, 0f);
+			}
 		}
 	}
 }
