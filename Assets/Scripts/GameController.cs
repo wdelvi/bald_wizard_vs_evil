@@ -12,8 +12,7 @@ public class GameController : MonoBehaviour
 	{
 		this.settings = this.gameObject.GetComponent<GameSettings> ();
 		this.model = new GameModel ();
-		this.model.GameStart (settings);
-		this.UpdateMainText ("Oh no! Bugs are attacking Lumos! We need the Bald Wizard!\nClick to Debug", 8f);
+		this.UpdateMainText ("The Bald Wizard VS Evil\nClick to begin", 0f);
 	}
 
 	// Update is called once per frame
@@ -30,9 +29,13 @@ public class GameController : MonoBehaviour
 			{
 				this.ShowNextGoodbye ();
 			} 
-			else if (this.model.gameLost)
+			else if (this.model.gameLost) 
 			{
 				this.RestartGame ();
+			} 
+			else if (!this.model.gameStarted && !this.model.gameEnded)
+			{
+				this.StartGame ();
 			}
 		}
 
@@ -61,6 +64,19 @@ public class GameController : MonoBehaviour
 		{
 			this.WinGame ();
 		}
+	}
+
+	protected void StartGame()
+	{
+		this.model.gameStarted = true;
+		Invoke ("DelayedStartGame", 1f);
+		this.UpdateMainText ("Oh no! Bugs are attacking Lumos! We need the Bald Wizard!\nClick to Debug", 8f);
+	}
+
+	protected void DelayedStartGame()
+	{
+		this.model.GameStart (settings);
+		this.SpawnTutorBug ();
 	}
 
 	protected void LoseGame()
@@ -92,6 +108,7 @@ public class GameController : MonoBehaviour
 	protected void EndGame()
 	{
 		this.model.gameRunning = false;
+		this.model.gameEnded = true;
 
 		this.StopAllEnemies ();
 	}
@@ -159,7 +176,7 @@ public class GameController : MonoBehaviour
 
 		if (this.model.spawnTimer >= this.model.timeUntilNextSpawn) 
 		{
-			this.SpawnBug ();
+			this.SpawnBug ( );
 			this.model.AdjustSpawnTimer (settings);
 		}
 	}
@@ -172,14 +189,35 @@ public class GameController : MonoBehaviour
 		}
 	}
 
-	protected void SpawnBug()
+	protected void SpawnBug( )
 	{
 		if (this.settings.bugPrefab == null) 
 		{
 			return;
 		}
 
-		GameObject newBug = Instantiate (this.settings.bugPrefab, this.GetSpawnBugLocation (), this.settings.bugPrefab.transform.rotation) as GameObject;
+		GameObject newBug = Instantiate (this.settings.bugPrefab, this.GetSpawnBugLocation(), this.settings.bugPrefab.transform.rotation) as GameObject;
+		DestroyOnContactWith newBugDestroyOnContact = newBug.GetComponent<DestroyOnContactWith> ();
+
+		if (this.settings.building != null && newBugDestroyOnContact != null) 
+		{
+			newBugDestroyOnContact.toDestoryIfCollide = this.settings.building;
+		}
+
+		this.model.spawnedEnemies.Add (newBug);
+	}
+
+	protected void SpawnTutorBug( )
+	{
+		if (this.settings.tutorBugPrefab == null) 
+		{
+			return;
+		}
+
+		Vector3 tutorBugSpawn = this.settings.tutorBugPrefab.transform.localPosition;
+		tutorBugSpawn.x = this.settings.tutorSpawnX;
+
+		GameObject newBug = Instantiate (this.settings.tutorBugPrefab, tutorBugSpawn, this.settings.tutorBugPrefab.transform.rotation) as GameObject;
 		DestroyOnContactWith newBugDestroyOnContact = newBug.GetComponent<DestroyOnContactWith> ();
 
 		if (this.settings.building != null && newBugDestroyOnContact != null) 

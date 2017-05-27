@@ -10,6 +10,7 @@ public class GameSettings : MonoBehaviour
 	public Slider progressSlider;
 	public GameObject building;
 	public GameObject bugPrefab;
+	public GameObject tutorBugPrefab;
 	public GameObject elevatePrefab;
 	public float bossSpawnTimeRatio;
 	public float gameLength;
@@ -18,6 +19,7 @@ public class GameSettings : MonoBehaviour
 	public float spawnRateFloor;
 	public float spawnX;
 	public float bossSpawnX;
+	public float tutorSpawnX;
 	public float minSpawnY;
 	public float maxSpawnY;
 	public float bossInitialForceMultiplier;

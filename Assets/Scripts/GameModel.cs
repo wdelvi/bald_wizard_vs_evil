@@ -15,6 +15,8 @@ public class GameModel
 	public bool gameLost;
 	public int goodbyeIndex;
 	public bool bossSpawned;
+	public bool gameStarted;
+	public bool gameEnded;
 	public List<GameObject> spawnedEnemies;
 
 	public void GameStart( GameSettings settings )
@@ -28,6 +30,8 @@ public class GameModel
 		this.gameLost = false;
 		this.goodbyeIndex = 0;
 		this.bossSpawned = false;
+		this.gameStarted = false;
+		this.gameEnded = false;
 		this.spawnedEnemies = new List<GameObject> ();
 	}
 
